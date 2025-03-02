@@ -3,8 +3,6 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import FooterView from '@/components/FooterView.vue'
-import CarouselView from '@/components/CarouselView.vue'
-import Carousel2View from '@/components/Carousel2View.vue'
 
 // Vuetify
 import 'vuetify/styles'
@@ -23,8 +21,6 @@ import router from './router'
 const app = createApp(App)
 
 app.component('FooterView', FooterView);
-app.component('CarouselView', CarouselView);
-app.component('Carousel2View', Carousel2View);
 
 app.use(createPinia())
 app.use(router)
