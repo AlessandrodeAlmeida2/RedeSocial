@@ -1,25 +1,49 @@
 <template>
   <div id="app">
-    <header>
-      <div class="wrapper">      
-        <div class="logo">
-          <img src="@/assets/img/OIG2.png" alt="Logo">
+    <header class="header">
+      <div class="logo">
+        <h1>SocialConnect</h1>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Pesquisar..." v-model="searchQuery" />
+        <button class="search-button">
+          <i class="search-icon">🔍</i>
+        </button>
+      </div>
+      <nav class="nav-menu">
+        <div class="nav-item active">
+          <i class="nav-icon">🏠</i>
+          <a href="/">Início</a>
         </div>
-        <nav v-if="route.name != 'about'">        
-          <div v-if="showNav" class="nav-links">
-            <div class="close" @click="showNav = !showNav"><i>Menu</i></div>
-            <RouterLink class="separator1" to="/home">Início</RouterLink>
-            <RouterLink class="separator2" to="/read">Buscar um pet</RouterLink>
-            <RouterLink class="separator3" to="/anuncio">Iniciar uma campanha</RouterLink>
-            <RouterLink v-if="!isLoggedIn" class="separator6" to="/login"><i class="fa-solid fa-user"></i>Entrar</RouterLink>
-            <RouterLink v-else class="separator6" to="/account"><i class="fa-solid fa-user"></i>Minha conta</RouterLink>                   
-            <RouterLink v-if="!isLoggedIn" class="separator4" to="/signup">Cadastre-se</RouterLink>
-            <a v-else class="separator4" @click="signOut">Sair</a>
+        <div class="nav-item">
+          <i class="nav-icon">👥</i>
+          <span>Minha Rede</span>
+        </div>
+        <div class="nav-item">
+          <i class="nav-icon">💼</i>
+          <span>Vagas</span>
+        </div>
+        <div class="nav-item">
+          <i class="nav-icon">💬</i>
+          <span>Mensagens</span>
+        </div>
+        <div class="nav-item">
+          <i class="nav-icon">🔔</i>
+          <span>Notificações</span>
+          <div v-if="notifications > 0" class="notification-badge">{{ notifications }}</div>
+        </div>
+      </nav>
+      <div class="user-profile" @click="toggleDropdown">
+        <img src="https://via.placeholder.com/40" alt="Foto de perfil" class="profile-image" />
+        <div class="profile-dropdown">
+          <i class="dropdown-icon">▼</i>
+          <div v-if="isDropdownOpen" class="dropdown-menu">
+            <a href="/login" class="dropdown-item">Login</a>
+            <a href="/profile" class="dropdown-item">Meu Perfil</a>
+            <a href="/settings" class="dropdown-item">Configurações</a>
+            <a href="/logout" class="dropdown-item">Sair</a>
           </div>
-          <div class="hamburger" @click="showNav = !showNav">
-            <i>Menu</i>
-          </div>
-        </nav>
+        </div>
       </div>
     </header>
     <main>
@@ -27,9 +51,7 @@
         <RouterView/>
       </div>
     </main>
-    <div class="chat" @click="openChat">
-      <img src="@/assets/img/chat.png" alt="Chat" height="70px">
-    </div>
+    
     <footer>
       <FooterView/>
     </footer>  
@@ -37,269 +59,153 @@
 </template>
 
 <script>
-import '@fortawesome/fontawesome-free/css/all.css'
-import { RouterLink, RouterView, useRoute } from 'vue-router';
-import { ref, onMounted, watch } from 'vue';
-import { supabase } from './supabase';
-import FooterView from '@/components/FooterView.vue';
-
 export default {
-  name: 'App',
-  setup() {
-    const isLoggedIn = ref(false);
-
-    supabase.auth.onAuthStateChange((event) => {
-      isLoggedIn.value = event === 'SIGNED_IN' || event === 'USER_UPDATED';
-    });
-
-    //logout
-    async function signOut() {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Logout has been successful");
-      }
-    }
-
-    const openChat = () => {
-      window.open('https://dogbot-d7fb9f.zapier.app/', '_blank', 'width=400,height=600');
-    };
-
-    const showNav = ref(window.innerWidth > 768);
-    let route = useRoute();
-
-    watch(route, (newRoute) => {
-      route = newRoute;
-    });
-
-    onMounted(async () => {
-      const { user } = await supabase.auth.getSession();
-      isLoggedIn.value = user ? true : false;
-      
-      window.addEventListener('resize', () => {
-        showNav.value = window.innerWidth > 768;
-      });
-
-      // Google Analytics
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-MXGQ6BE5CG');
-
-      // Adiciona o script do Google Analytics
-      const script = document.createElement('script');
-      script.src = "https://www.googletagmanager.com/gtag/js?id=G-MXGQ6BE5CG";
-      script.async = true;
-      document.head.appendChild(script);
-    });
-
+  data() {
     return {
-      isLoggedIn,
-      signOut,
-      openChat,
-      showNav,
-      route
-    };
+      searchQuery: '',
+      notifications: 3,
+      isDropdownOpen: false
+    }
+  },
+  methods: {
+    toggleDropdown() {
+      this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    openChat() {
+      // Implementação da abertura do chat
+      console.log('Abrindo chat');
+    }
   }
 }
 </script>
 
 <style>
-
-header {
-  background-color: var(--primary-color);
-  height: 16%;
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+.header {
   display: flex;
-}
-
-.header img {
-    width: 600px;
-    margin-left: 60px;
-}
-
-div.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 20px 50px;
-  animation: slideRight 3s forwards;
-}
-
-div.wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.active-class {
-  display: flex;
-  justify-content: flex-end;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between; 
-  gap: 8px;
-}
-
-.nav-links {
-  display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 32px;
-  margin-left: 80px;
-  font-size: 20px;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 60px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.separator1 {
-  animation: zoomIn 1s forwards;
+.logo h1 {
+  color: #0077b5;
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-.separator2 {
-  animation: zoomIn 2s forwards;
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f3f2ef;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 0 15px;
+  flex: 1;
+  max-width: 300px;
 }
 
-.separator3 {
-  animation: zoomIn 3s forwards;
+.search-bar input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
 }
 
-.separator4 {
-  text-align: center;
-  font-size: 20px;
-  gap: 8px;
-  color: var(--text-color);
-  background-color: var(--secondary-color);
-  margin-left: 6em;
-  padding: 16px;
-  border-radius: 24px;
-  animation: zoomIn 4s forwards;
-}
-
-.separator6 {
-  order: 2;
-  text-align: center;
-  font-size: 16px;
-  gap: 8px;
-  border: 2px solid var(--secondary-color);
-  color: var(--text-color);
-  background-color: var(--secondary-color);
-  padding: 16px;
-  border-radius: 32px;
-  animation: zoomIn 5s forwards;
-}
-
-.hamburger, .chat, .close {
-  display: none;
+.search-button {
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
+.nav-menu {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-item.active {
+  color: #0077b5;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #ff0000;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.profile-image {
+  border-radius: 50%;
+}
+
+.profile-dropdown {
+  margin-left: 5px;
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  width: 150px;
+  z-index: 100;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f2ef;
+}
+
 .chat {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 40px; 
-    right: 40px;
-    background-color: #fff;
-    border-radius: 50%;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); 
-    z-index: 9999; 
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
 }
 
-.v-application__wrap {
-    min-height: 10dvh;
-    height: 300px;
+main {
+  min-height: calc(100vh - 60px - 100px);
+  padding: 20px;
 }
 
-@media (max-width: 768px) {
-  div.logo {
-    display: flex;
-    align-items: center;
-  }
-
-  nav {
-    margin: 12% 10% 0 15%;
-
-  }
-
-  .nav-links {
-    position: fixed;
-    top: 80px; 
-    right: 80px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); 
-    z-index: 9999; 
-    background-color: var(--primary-color);
-    opacity: 1;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    padding: 24px 40px;
-    gap: 10px;
-    margin-left: 0;
-    font-size: 2em;
-  }
-
-  .nav-links.show-nav {
-    transform: translateX(0%);
-  }
-
-  .nav-links span {
-    display: none;
-  }
-
-  .separator1,
-  .separator2,
-  .separator3 {
-    color: white;
-    font-size: 0.5em;
-    font-weight: bold;
-  }
-
-  .separator4 {
-    margin: 0 auto;
-    font-size: 0.6em;
-    color: white;
-    background-color: transparent;
-    padding: 0;
-    order: 2;
-    font-weight: bold;
-  }
-
-  .separator6 {
-    margin: 0 auto;
-    font-size: 0.6em;
-    color: white;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    font-weight: bold;
-  }
-
-  .hamburger {
-    font-size: 1em;
-    color: #fff;
-    height: 80px;
-    width: 80px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 40px;
-    right: 40px;
-    background-color: var(--secondary-color);
-    padding: 16px;
-    border-radius: 50%; 
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); 
-    z-index: 9999; 
+footer {
+  height: 100px;
+  background-color: #f3f2ef;
 }
-
-  .close {
-    font-size: 1.5em;
-    color: white; 
-    font-weight: 600;
-  }
-}
-
 </style>
