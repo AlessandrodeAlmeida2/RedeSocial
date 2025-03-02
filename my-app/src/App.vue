@@ -29,7 +29,7 @@
         </div>
         <div class="nav-item">
           <i class="nav-icon">🔔</i>
-          <span>Notificações</span>
+          <a>Notificações</a>
           <div v-if="notifications > 0" class="notification-badge">{{ notifications }}</div>
         </div>
       </nav>
