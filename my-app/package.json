@@ -25,7 +25,7 @@
     "stripe": "^16.9.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
-    "vuetify": "^3.5.16",
+    "vuetify": "^3.7.14",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

@@ -105,7 +105,7 @@
             </div>
             
             <div class="post-actions">
-              <button class="post-action-button" @click="likePost(index)">
+              <button class="post-action-button" >
                 <i class="action-icon" :class="{ 'liked': post.liked }">👍</i>
                 <span>Gostei</span>
               </button>
@@ -324,14 +324,6 @@ export default {
     }
   },
   methods: {
-    likePost(index) {
-      this.posts[index].liked = !this.posts[index].liked;
-      if (this.posts[index].liked) {
-        this.posts[index].reactionCount++;
-      } else {
-        this.posts[index].reactionCount--;
-      }
-    },
     createPost() {
       if (!this.newPostContent.trim()) return;
       
