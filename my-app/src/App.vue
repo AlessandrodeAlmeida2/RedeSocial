@@ -17,15 +17,15 @@
         </div>
         <div class="nav-item">
           <i class="nav-icon">👥</i>
-          <span>Minha Rede</span>
+          <a>Minha Rede</a>
         </div>
         <div class="nav-item">
           <i class="nav-icon">💼</i>
-          <span>Vagas</span>
+          <a>Vagas</a>
         </div>
         <div class="nav-item">
           <i class="nav-icon">💬</i>
-          <span>Mensagens</span>
+          <a>Mensagens</a>
         </div>
         <div class="nav-item">
           <i class="nav-icon">🔔</i>
