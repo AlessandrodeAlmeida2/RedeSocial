@@ -39,9 +39,10 @@
           <i class="dropdown-icon">▼</i>
           <div v-if="isDropdownOpen" class="dropdown-menu">
             <a href="/login" class="dropdown-item">Login</a>
+            <a href="/cadastro" class="dropdown-item">Cadastrar</a>
             <a href="/profile" class="dropdown-item">Meu Perfil</a>
             <a href="/settings" class="dropdown-item">Configurações</a>
-            <a href="/logout" class="dropdown-item">Sair</a>
+            <a href="/" class="dropdown-item">Sair</a>
           </div>
         </div>
       </div>

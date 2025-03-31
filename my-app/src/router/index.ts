@@ -18,6 +18,11 @@ const router = createRouter({
       alias: '/home'
     },
     {
+      path: '/cadastro',
+      name: 'cadastro',
+      component: () => import('../components/CadastroView.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       // route level code-splitting

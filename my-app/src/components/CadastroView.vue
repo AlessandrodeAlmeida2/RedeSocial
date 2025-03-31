@@ -1,87 +1,62 @@
 <template>
-  <div class="container-login">
-      <div class="input">
-          <h1>Entrar</h1>
-          <v-sheet class="mx-auto" width="300">
-          <v-form class="form" v-model="valid">
+    <div class="container-login">
+        <div class="input">
+            <h1>Faça seu cadastro</h1>
+            <v-sheet class="mx-auto" width="300">
+            <v-form class="campos">
+                
+                <v-text-field
+                    v-model="email"
+                    label="E-mail"
+                    hide-details
+                    required
+                    variant="solo-filled"
+                ></v-text-field><br>
 
-              <v-text-field
-                  v-model="email"
-                  label="E-mail"
-                  hide-details
-                  required
-                  variant="solo-filled"
-              ></v-text-field><br>
+                <v-text-field
+                    v-model="password"
+                    :counter="10"
+                    label="Senha com no mínimo 6 caracteres"
+                    hide-details
+                    required
+                    variant="solo-filled"
+                    type="password"
+                ></v-text-field><br>
+                
+            </v-form>
+            </v-sheet>
 
-              <v-text-field
-                  v-model="password"
-                  :counter="10"
-                  type="password"
-                  label="Senha"
-                  hide-details
-                  required
-                  variant="solo-filled"
-              ></v-text-field>
-
-          </v-form>
-          </v-sheet>
-          <div class="buttonContainer">
-              <v-btn @click="signIn">Entrar</v-btn>
-          </div>
-      </div>
-  </div>
+            <div class="buttonContainer">
+                <v-btn @click="createAccount">Cadastrar</v-btn>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '../supabase'
-import { useRouter } from 'vue-router';
 
 //connect inputs
 let email = ref('');
 let password = ref ('');
-const router = useRouter()
 
-//login
-async function signIn() {
-  const { data, error } = await supabase.auth.signInWithPassword({
-      email: email.value,
-      password: password.value
-  })
-  if (error) {
-      console.log(error);
-      window.alert("E-mail ou senha incorretos")
-  } else {
-      console.log(data);
-      router.push('/home');
-  }
-}
-
-//seeCurrentUser
-/*async function seeCurrentUser() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-      console.log(session);
-      console.log(session.user.phone);
-  } else {
-      console.log('No active session');
-  }
-}*/
-
-
-//logout
-async function signOut() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-      console.log(error);
-  } else {
-      console.log("Logout has been successful")
-  }
+//create account
+async function createAccount() {
+    const { user, error } = await supabase.auth.signUp({
+        email: email.value,
+        password: password.value,
+    })
+    if (error) {
+        console.log(error)
+    } else {
+        console.log(user)
+        window.alert("Um email foi enviado para " + email.value + ". Por favor, verifique sua caixa de entrada.")
+    }
 }
 
 </script>
-  
+
 <style scoped>
   .container-login {
     max-width: 400px;
