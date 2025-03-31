@@ -8,7 +8,7 @@
         <div class="profile-card">
           <div class="profile-background"></div>
           <div class="profile-info">
-            <img src="https://via.placeholder.com/80" alt="Foto de perfil" class="profile-image-large" />
+            <img src="" alt="Foto de perfil" class="profile-image-large" />
             <h2>{{ userData.name }}</h2>
             <p class="profile-headline">{{ userData.headline }}</p>
           </div>
