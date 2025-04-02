@@ -5,29 +5,27 @@
             <v-sheet class="mx-auto" width="300">
             <v-form class="campos">
 
-                <v-text-field
-                    v-model="email"
-                    label="E-mail"
+              <v-text-field
+                    v-model="username"
+                    label="Username"
                     hide-details
                     required
                     variant="solo-filled"
                 ></v-text-field><br>
 
-                <v-text-field
-                    v-model="password"
-                    :counter="10"
-                    label="Senha com no mínimo 6 caracteres"
+                <v-select
+                    v-model="role"
+                    :items="['Estudante', 'Professor', 'Admin']"
+                    label="Selecione seu papel"
                     hide-details
                     required
                     variant="solo-filled"
-                    type="password"
-                ></v-text-field><br>
-                
+                ></v-select>
             </v-form>
             </v-sheet>
 
             <div class="buttonContainer">
-                <v-btn @click="createAccount">Cadastrar</v-btn>
+                <v-btn @click="createUser">Cadastrar</v-btn>
             </div>
         </div>
     </div>
@@ -36,31 +34,30 @@
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '../supabase'
-import { useRouter } from 'vue-router';
-
 
 //connect inputs
-let email = ref('');
-let password = ref('');
-const router = useRouter()
+let username = ref('');
+let role = ref('Estudante');
 
-//create account
-async function createAccount() {
-    // Cadastra o usuário no Supabase auth
-    const { user, error } = await supabase.auth.signUp({
-        email: email.value,
-        password: password.value}, {
-  redirectTo: 'https://rede-social-taupe.vercel.app/user'
-  });
+async function createUser() {
+    // Salva dados adicionais na tabela personalizada 'users'
+    const { data, error: userError } = await supabase
+        .from('users')
+        .upsert([
+            { username: username.value, role: role.value },
+        ])
+        .select();
 
-    if (error) {
-        console.log(error);
-        window.alert("Erro ao criar conta: " + error.message);
+    if (userError) {
+        console.log(userError);
+        window.alert("Erro ao salvar informações adicionais: " + userError.message);
     } else {
-        console.log(user);
-        window.alert("Um email foi enviado para " + email.value + ". Por favor, verifique sua caixa de entrada.");
+        console.log(data);
+        window.alert("Informações adicionais salvas com sucesso!");
     }
 }
+
+
 
 </script>
 
