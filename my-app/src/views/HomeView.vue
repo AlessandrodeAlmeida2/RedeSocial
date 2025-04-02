@@ -7,7 +7,6 @@
     <!-- Criar Postagem -->
     <div class="create-post">
       <div class="create-post-input">
-        <img :src="userData.avatar || 'https://via.placeholder.com/40'" alt="Foto de perfil" class="profile-image-small" />
         <input 
           type="text" 
           placeholder="Iniciar uma publicação" 
@@ -99,7 +98,6 @@
             <div v-if="comment.children && comment.children.length > 0" class="nested-comments">
               <div v-for="child in comment.children" :key="child.id" class="comment nested">
                 <div class="comment-header">
-                  <img :src="child.users.avatar || 'https://via.placeholder.com/30'" alt="Avatar" class="comment-avatar" />
                   <div class="comment-author">
                     <h4>{{ child.users.username }}</h4>
                     <span class="comment-time">{{ formatTimeAgo(child.created_at) }}</span>
@@ -142,11 +140,11 @@
         <div class="modal-author">
           <div>
             <h4>{{ userData.name }}</h4>
-            <select class="visibility-selector" v-model="postVisibility">
+            <!-- <select class="visibility-selector" v-model="postVisibility">
               <option value="🌎">🌎 Público</option>
               <option value="👥">👥 Conexões</option>
               <option value="🔒">🔒 Somente eu</option>
-            </select>
+            </select> -->
           </div>
         </div>
         <textarea 
@@ -162,26 +160,6 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div class="modal-actions">
-          <button class="modal-action-button">
-            <i class="action-icon">📷</i>
-          </button>
-          <button class="modal-action-button">
-            <i class="action-icon">🎥</i>
-          </button>
-          <button class="modal-action-button">
-            <i class="action-icon">📄</i>
-          </button>
-          <button class="modal-action-button">
-            <i class="action-icon">👥</i>
-          </button>
-          <button class="modal-action-button">
-            <i class="action-icon">🎯</i>
-          </button>
-          <button class="modal-action-button">
-            <i class="action-icon">...</i>
-          </button>
-        </div>
         <button 
           class="publish-button" 
           :disabled="!newPostContent.trim()" 
@@ -1089,6 +1067,64 @@ button {
   padding: 8px 16px;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* PopUp de postagens*/
+.post-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.post-modal {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.post-textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.publish-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.publish-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
 .reactions {
