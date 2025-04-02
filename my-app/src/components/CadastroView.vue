@@ -6,6 +6,8 @@
             <v-form class="campos">
 
                 <button class="git" @click="signInWithGitHub">Login com GitHub</button>
+                <button class="discord" @click="signInWithDiscord">Login com Discord</button>
+
                 <p>Or</p>
                 <v-text-field
                     v-model="email"
@@ -45,6 +47,23 @@ import { useRouter } from 'vue-router';
 let email = ref('');
 let password = ref('');
 const router = useRouter()
+
+async function signInWithDiscord() {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+            redirectTo: 'https://rede-social-taupe.vercel.app/user'
+        }
+    });
+
+    if (error) {
+        console.error("Erro ao autenticar com Discord:", error);
+        window.alert("Erro ao fazer login com Discord: " + error.message);
+    } else {
+        console.log("Usuário autenticado:", user);
+        window.alert("Login bem-sucedido!");
+    }
+}
 
 async function signInWithGitHub() {
     const { user, error } = await supabase.auth.signInWithOAuth({
@@ -137,6 +156,13 @@ async function createAccount() {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .discord {
+    padding: 12px;
+    color: white;
+    background-color: rgb(30, 116, 247);
+    border-radius: 4px;
   }
 
   .git {
