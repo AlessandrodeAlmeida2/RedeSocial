@@ -4,34 +4,21 @@
       <div class="logo">
         <h1>SocialConnect</h1>
       </div>
-      <div class="search-bar">
+      <!-- <div class="search-bar">
         <input type="text" placeholder="Pesquisar..." v-model="searchQuery" />
         <button class="search-button">
           <i class="search-icon">🔍</i>
         </button>
-      </div>
+      </div> -->
       <nav class="nav-menu">
         <div class="nav-item active">
           <i class="nav-icon">🏠</i>
           <a href="/">Início</a>
         </div>
-        <div class="nav-item">
+        <!-- <div class="nav-item">
           <i class="nav-icon">👥</i>
           <a>Minha Rede</a>
-        </div>
-        <div class="nav-item">
-          <i class="nav-icon">💼</i>
-          <a>Vagas</a>
-        </div>
-        <div class="nav-item">
-          <i class="nav-icon">💬</i>
-          <a>Mensagens</a>
-        </div>
-        <div class="nav-item">
-          <i class="nav-icon">🔔</i>
-          <a>Notificações</a>
-          <div v-if="notifications > 0" class="notification-badge">{{ notifications }}</div>
-        </div>
+        </div> -->
       </nav>
       <div class="user-profile" @click="toggleDropdown">
         <img src="https://via.placeholder.com/40" alt="Foto de perfil" class="profile-image" />
@@ -41,6 +28,7 @@
             <a href="/login" class="dropdown-item">Login</a>
             <a href="/cadastro" class="dropdown-item">Cadastrar</a>
             <a href="/profile" class="dropdown-item">Meu Perfil</a>
+            <a href="#" class="dropdown-item">Minha Rede</a>
             <a href="/settings" class="dropdown-item">Configurações</a>
             <a href="/" class="dropdown-item">Sair</a>
           </div>
