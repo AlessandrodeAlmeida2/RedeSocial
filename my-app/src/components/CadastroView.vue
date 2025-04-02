@@ -5,6 +5,8 @@
             <v-sheet class="mx-auto" width="300">
             <v-form class="campos">
 
+                <button class="git" @click="signInWithGitHub">Login com GitHub</button>
+                <p>Or</p>
                 <v-text-field
                     v-model="email"
                     label="E-mail"
@@ -43,6 +45,23 @@ import { useRouter } from 'vue-router';
 let email = ref('');
 let password = ref('');
 const router = useRouter()
+
+async function signInWithGitHub() {
+    const { user, error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+            redirectTo: 'https://rede-social-taupe.vercel.app/user'
+        }
+    });
+
+    if (error) {
+        console.error("Erro ao autenticar:", error);
+        window.alert("Erro ao fazer login com GitHub: " + error.message);
+    } else {
+        console.log("Usuário autenticado:", user);
+        window.alert("Login bem-sucedido!");
+    }
+}
 
 //create account
 async function createAccount() {
@@ -118,6 +137,13 @@ async function createAccount() {
     width: 100%;
     display: flex;
     justify-content: center;
+  }
+
+  .git {
+    padding: 12px;
+    color: white;
+    background-color: black;
+    border-radius: 4px;
   }
 
   .v-btn {

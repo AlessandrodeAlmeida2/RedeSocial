@@ -34,10 +34,12 @@
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '../supabase'
+import { useRouter } from 'vue-router';
 
 //connect inputs
 let username = ref('');
 let role = ref('Estudante');
+const router = useRouter();
 
 async function createUser() {
     // Salva dados adicionais na tabela personalizada 'users'
@@ -54,6 +56,7 @@ async function createUser() {
     } else {
         console.log(data);
         window.alert("Informações adicionais salvas com sucesso!");
+        router.push('/')
     }
 }
 

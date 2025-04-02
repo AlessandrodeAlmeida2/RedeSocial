@@ -60,6 +60,11 @@
 </template>
 
 <script>
+import { supabase } from '@/supabase';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 export default {
   data() {
     return {
@@ -75,6 +80,17 @@ export default {
     openChat() {
       // Implementação da abertura do chat
       console.log('Abrindo chat');
+    },
+    // Adicionando a função signOut dentro de methods
+    async signOut() {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Logout has been successful");
+        window.alert('Você fez Logout com sucesso');
+        router.push('/')
+      }
     }
   }
 }
