@@ -34,7 +34,17 @@ const router = createRouter({
       path: '/user',
       name: 'user',
       component: () => import('../components/UserView.vue')
-    },    
+    },
+    {
+      path: '/event',
+      name: 'event',
+      component: () => import('@/components/EventView.vue')
+    },
+    {
+      path: '/moderacao',
+      name: 'moderacao',
+      component: () => import('@/components/ModeracaoEventos.vue')
+    }, 
     {
       path: '/footer',
       name: 'footer',

@@ -1,67 +1,111 @@
 <template>
-    <div class="container-login">
-        <div class="input">
-            <h1>Faça seu cadastro</h1>
-            <v-sheet class="mx-auto" width="300">
-            <v-form class="campos">
+  <div class="container-login">
+    <div class="input">
+      <h1>Faça seu cadastro</h1>
+      <v-sheet class="mx-auto" width="300">
+        <v-form class="campos">
+          <v-text-field
+            v-model="username"
+            label="Username"
+            hide-details
+            required
+            variant="solo-filled"
+          ></v-text-field><br />
 
-              <v-text-field
-                    v-model="username"
-                    label="Username"
-                    hide-details
-                    required
-                    variant="solo-filled"
-                ></v-text-field><br>
+          <v-select
+            v-model="role"
+            :items="['Estudante', 'Professor']"
+            label="Selecione seu papel"
+            hide-details
+            required
+            variant="solo-filled"
+          ></v-select><br />
 
-                <v-select
-                    v-model="role"
-                    :items="['Estudante', 'Professor', 'Admin']"
-                    label="Selecione seu papel"
-                    hide-details
-                    required
-                    variant="solo-filled"
-                ></v-select>
-            </v-form>
-            </v-sheet>
+          <v-select
+            v-model="selectedClassId"
+            :items="classes"
+            item-title="title"
+            item-value="id"
+            label="Selecione a Turma"
+            hide-details
+            required
+            variant="solo-filled"
+          ></v-select>
+        </v-form>
+      </v-sheet>
 
-            <div class="buttonContainer">
-                <v-btn @click="createUser">Cadastrar</v-btn>
-            </div>
-        </div>
+      <div class="buttonContainer">
+        <v-btn @click="createUser">Cadastrar</v-btn>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { supabase } from '../supabase'
+import { ref, onMounted } from 'vue';
+import { supabase } from '../supabase';
 import { useRouter } from 'vue-router';
 
-//connect inputs
-let username = ref('');
-let role = ref('Estudante');
+const username = ref('');
+const role = ref('Estudante');
+const selectedClassId = ref(null);
+const classes = ref([]);
 const router = useRouter();
 
+// Carrega as turmas ao iniciar
+onMounted(async () => {
+  const { data, error } = await supabase.from('classess').select('id, title');
+  if (error) {
+    console.error('Erro ao carregar turmas:', error.message);
+  } else {
+    classes.value = data;
+  }
+});
+
 async function createUser() {
-    // Salva dados adicionais na tabela personalizada 'users'
-    const { data, error: userError } = await supabase
-        .from('users')
-        .upsert([
-            { username: username.value, role: role.value },
-        ])
-        .select();
+  if (!selectedClassId.value) {
+    window.alert("Por favor, selecione uma turma.");
+    return;
+  }
 
-    if (userError) {
-        console.log(userError);
-        window.alert("Erro ao salvar informações adicionais: " + userError.message);
-    } else {
-        console.log(data);
-        window.alert("Informações adicionais salvas com sucesso!");
-        router.push('/')
-    }
+  // Insere na tabela users
+  const { data: userData, error: userError } = await supabase
+    .from('users')
+    .upsert([
+      { username: username.value, role: role.value.toLowerCase() }
+    ])
+    .select()
+    .single();
+
+  if (userError) {
+    console.log(userError);
+    window.alert("Erro ao salvar usuário: " + userError.message);
+    return;
+  }
+
+  const userId = userData.id;
+  const isAdmin = role.value === 'Professor';
+
+  // Associa à turma
+  const { error: classMemberError } = await supabase
+    .from('class_members')
+    .insert([
+      {
+        user_id: userId,
+        class_id: selectedClassId.value,
+        is_admin: isAdmin
+      }
+    ]);
+
+  if (classMemberError) {
+    console.log(classMemberError);
+    window.alert("Erro ao adicionar à turma: " + classMemberError.message);
+    return;
+  }
+
+  window.alert("Usuário cadastrado com sucesso!");
+  router.push('/');
 }
-
-
-
 </script>
 
 <style scoped>
