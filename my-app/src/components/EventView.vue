@@ -19,10 +19,14 @@
           <v-card-title>{{ evento.title }}</v-card-title>
           <v-card-subtitle>Data: {{ formatarData(evento.date) }}</v-card-subtitle>
           <v-card-text>{{ evento.body }}</v-card-text>
+          <v-card-actions>
+            <v-btn @click="participarDoEvento(evento.id)" color="primary">
+                Participar
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-sheet>
   
-      <!-- Diálogo de Publicação -->
       <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title class="headline">Publicar Evento</v-card-title>
@@ -96,6 +100,42 @@
       day: 'numeric',
     })
   }
+
+  async function participarDoEvento(eventId) {
+  const {
+    data: { user },
+    error: authError
+  } = await supabase.auth.getUser()
+
+  if (authError || !user) {
+    alert('Você precisa estar logado para participar.')
+    return
+  }
+
+  // Verifica se já está participando
+  const { data: existing, error: checkError } = await supabase
+    .from('event_participants')
+    .select('*')
+    .eq('event_id', eventId)
+    .eq('user_id', user.id)
+    .single()
+
+  if (existing) {
+    alert('Você já está participando deste evento.')
+    return
+  }
+
+  const { error: insertError } = await supabase
+    .from('event_participants')
+    .insert([{ event_id: eventId, user_id: user.id }])
+
+  if (insertError) {
+    console.error(insertError)
+    alert('Erro ao participar do evento.')
+  } else {
+    alert('Você está participando do evento!')
+  }
+}
   
   async function submitEvent() {
     const {
