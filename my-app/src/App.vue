@@ -27,7 +27,7 @@
           <div v-if="isDropdownOpen" class="dropdown-menu">
             <a href="/login" class="dropdown-item">Login</a>
             <a href="/cadastro" class="dropdown-item">Cadastrar</a>
-            <a href="/profile" class="dropdown-item">Meu Perfil</a>
+            <a href="/event" class="dropdown-item">Eventos</a>
             <a href="#" class="dropdown-item">Minha Rede</a>
             <a href="/settings" class="dropdown-item">Configurações</a>
             <a href="/" class="dropdown-item">Sair</a>
