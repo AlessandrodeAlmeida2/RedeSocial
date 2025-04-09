@@ -1,6 +1,6 @@
 <template>
   <div class="left-sidebar">
-    <!-- Sidebar code mantido como está -->
+    
   </div>
 
   <div class="feed">
@@ -541,18 +541,6 @@ export default {
       await getCurrentUser()
       await fetchPosts()
       
-      // Dados mock para notícias e sugestões de conexões
-      news.value = [
-        { title: 'Nova função no JavaScript aprovada', timeAgo: '3h', readers: '1.542' },
-        { title: 'Mercado de TI cresce 15% no último trimestre', timeAgo: '5h', readers: '3.210' },
-        { title: 'Vue 3.3 lançado com novos recursos', timeAgo: '1d', readers: '5.489' }
-      ]
-      
-      suggestedPeople.value = [
-        { name: 'Ana Silva', headline: 'Desenvolvedora Full Stack', avatar: 'https://via.placeholder.com/60' },
-        { name: 'Carlos Mendes', headline: 'UX Designer', avatar: 'https://via.placeholder.com/60' },
-        { name: 'Juliana Costa', headline: 'Gerente de Projetos', avatar: 'https://via.placeholder.com/60' }
-      ]
     })
     
     return {

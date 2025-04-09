@@ -30,7 +30,7 @@
             <a href="/event" class="dropdown-item">Eventos</a>
             <a href="#" class="dropdown-item">Minha Rede</a>
             <a href="/settings" class="dropdown-item">Configurações</a>
-            <a href="/" class="dropdown-item">Sair</a>
+            <a @click="signOut()" class="dropdown-item">Sair</a>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@ export default {
       // Implementação da abertura do chat
       console.log('Abrindo chat');
     },
-    // Adicionando a função signOut dentro de methods
+    
     async signOut() {
       const { error } = await supabase.auth.signOut();
       if (error) {
@@ -77,7 +77,7 @@ export default {
       } else {
         console.log("Logout has been successful");
         window.alert('Você fez Logout com sucesso');
-        router.push('/')
+        this.$router.push('/home')
       }
     }
   }
