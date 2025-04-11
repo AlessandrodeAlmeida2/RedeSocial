@@ -44,7 +44,12 @@ const router = createRouter({
       path: '/moderacao',
       name: 'moderacao',
       component: () => import('@/components/ModeracaoEventos.vue')
-    }, 
+    },
+    {
+      path: '/aluno',
+      name: 'aluno',
+      component: () => import('@/components/AlunosView.vue')
+    },
     {
       path: '/footer',
       name: 'footer',

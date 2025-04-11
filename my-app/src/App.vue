@@ -21,7 +21,7 @@
         </div> -->
       </nav>
       <div class="user-profile" @click="toggleDropdown">
-        <img src="https://via.placeholder.com/40" alt="Foto de perfil" class="profile-image" />
+        <img src="" alt="Foto de perfil" class="profile-image" />
         <div class="profile-dropdown">
           <i class="dropdown-icon">▼</i>
           <div v-if="isDropdownOpen" class="dropdown-menu">
