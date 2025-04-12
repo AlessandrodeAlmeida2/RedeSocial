@@ -51,6 +51,17 @@ const router = createRouter({
       component: () => import('@/components/AlunosView.vue')
     },
     {
+      path: '/grupos',
+      name: 'grupos',
+      component: () => import('@/components/GruposView.vue')
+    },
+    {
+      path: '/chat/:groupId/chat',
+      name: 'chat',
+      component: () => import('@/components/GroupChat.vue'),
+      props: true
+    },
+    {
       path: '/footer',
       name: 'footer',
       component: FooterView

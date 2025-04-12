@@ -28,8 +28,9 @@
             <a href="/login" class="dropdown-item">Login</a>
             <a href="/cadastro" class="dropdown-item">Cadastrar</a>
             <a href="/event" class="dropdown-item">Eventos</a>
-            <a href="#" class="dropdown-item">Minha Rede</a>
-            <a href="/settings" class="dropdown-item">Configurações</a>
+            <a href="/grupos" class="dropdown-item">Grupos</a>
+            <a href="/aluno" class="dropdown-item">Diretório de Alunos</a>
+            <a v-if="show" href="/moderacao">Moderacao</a>
             <a @click="signOut()" class="dropdown-item">Sair</a>
           </div>
         </div>
@@ -51,25 +52,45 @@
 import { supabase } from '@/supabase';
 import { useRouter } from 'vue-router';
 
-const router = useRouter();
-
 export default {
   data() {
     return {
       searchQuery: '',
       notifications: 3,
-      isDropdownOpen: false
-    }
+      isDropdownOpen: false,
+      show: false
+    };
   },
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
     },
+
     openChat() {
-      // Implementação da abertura do chat
       console.log('Abrindo chat');
     },
-    
+
+    async fetchUserData() {
+      const { data: { user }, error: authError} = await supabase.auth.getUser();
+      if (authError) {
+        console.error('Erro ao obter usuário:', authError.message);
+        return;
+      }
+
+      const { data: userData, error: userError} = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (userError) {
+        console.error('Erro ao obter dados do usuário:', userError.message);
+        return;
+      }
+
+      console.log('Função do usuário:', userData.role);
+      this.show = userData.role === 'professor';
+    },
+
     async signOut() {
       const { error } = await supabase.auth.signOut();
       if (error) {
@@ -77,9 +98,12 @@ export default {
       } else {
         console.log("Logout has been successful");
         window.alert('Você fez Logout com sucesso');
-        this.$router.push('/home')
+        this.$router.push('/home'); // correto dentro da Options API
       }
     }
+  },
+  mounted() {
+    this.fetchUserData(); // chama a função assim que o componente for montado
   }
 }
 </script>
