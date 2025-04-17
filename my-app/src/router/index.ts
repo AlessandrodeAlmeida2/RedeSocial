@@ -51,6 +51,11 @@ const router = createRouter({
       component: () => import('@/components/AlunosView.vue')
     },
     {
+      path: '/aluno/:id',
+      name: 'aluno-perfil',
+      component: () => import('@/views/AlunoPerfilView.vue')
+    },
+    {
       path: '/grupos',
       name: 'grupos',
       component: () => import('@/components/GruposView.vue')

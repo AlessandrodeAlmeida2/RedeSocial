@@ -5,7 +5,7 @@
             <h3>{{ classTitle }}</h3>
             <ul class="student-list" style="list-style: none;">
                 <li v-for="student in students" :key="student.id" class="student-item">
-                    <strong>{{ student.username }}</strong> – {{ student.role }}
+                    <router-link :to="'/aluno/' + student.id" class="student-link">{{ student.username }}</router-link> – {{ student.role }}
                     <div class="modal-footer" v-if="currentUser.role === 'professor'">
                         <button class="save-button" @click="editStudent(student)">Editar</button>
                         <button class="cancel-button" @click="deleteStudent(student.id)">Excluir</button>
@@ -14,6 +14,7 @@
             </ul>
         </div>
     </div>
+    <!-- <AlunoPerfil v-if="perfilAberto" :aluno="alunoSelecionado" @fechar="fecharPerfil" /> -->
     <div v-if="show" class="edit-modal-overlay">
     <div class="edit-modal">
       <div class="modal-header">
@@ -45,6 +46,7 @@
   <script>
   import { ref, reactive, onMounted, computed } from 'vue'
   import { supabase } from '@/supabase'
+  // import AlunoPerfil from './AlunoPerfil.vue'
   
   export default {
     setup() {
@@ -58,6 +60,17 @@
         connections: 0,
         groups: []
       })
+      // Estado do perfil
+      const perfilAberto = ref(false)
+      const alunoSelecionado = ref(null)
+      const abrirPerfil = (aluno) => {
+        alunoSelecionado.value = aluno
+        perfilAberto.value = true
+      }
+      const fecharPerfil = () => {
+        perfilAberto.value = false
+        alunoSelecionado.value = null
+      }
       
       const currentUser = ref(null)
 
@@ -228,14 +241,23 @@
         salvarEdicao,
         fecharModal,
         show,
-        form
+        form,
+        // perfilAberto,
+        // alunoSelecionado,
+        // abrirPerfil,
+        // fecharPerfil
       }
     }
   }
   </script>
   
   <style scoped>
-  .class-group {
+  .student-link {
+  color: #1976d2;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.class-group {
     display: flex;
     flex-direction: column;
     align-items: start;

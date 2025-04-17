@@ -11,14 +11,21 @@
         </button>
       </div> -->
       <nav class="nav-menu">
-        <div class="nav-item active">
+        <div class="nav-item active" style="position: relative;">
           <i class="nav-icon">🏠</i>
           <a href="/">Início</a>
         </div>
-        <!-- <div class="nav-item">
-          <i class="nav-icon">👥</i>
-          <a>Minha Rede</a>
-        </div> -->
+        <div class="nav-item friend-requests" style="position: relative;" @click="toggleFriendRequests">
+          <span class="friend-icon">👥</span>
+          <span v-if="friendRequests.length > 0" class="notification-badge">{{ friendRequests.length }}</span>
+          <div v-if="showFriendRequests" class="friend-requests-dropdown">
+            <div v-if="friendRequests.length === 0" class="dropdown-empty">Nenhuma solicitação</div>
+            <div v-for="req in friendRequests" :key="req.id" class="dropdown-request">
+              <span>{{ req.sender?.username || req.sender?.id || 'Usuário' }}</span>
+              <button class="accept-btn" @click.stop="acceptFriendRequest(req)">Aceitar</button>
+            </div>
+          </div>
+        </div>
       </nav>
       <div class="user-profile" @click="toggleDropdown">
         <img src="" alt="Foto de perfil" class="profile-image" />
@@ -56,14 +63,34 @@ export default {
   data() {
     return {
       searchQuery: '',
-      notifications: 3,
+      notifications: 0,
+      friendRequests: [],
+      showFriendRequests: false,
       isDropdownOpen: false,
-      show: false
+      show: false,
+      currentUserId: null
     };
   },
   methods: {
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
+    },
+    toggleFriendRequests() {
+      this.showFriendRequests = !this.showFriendRequests;
+    },
+    async acceptFriendRequest(request) {
+      // Atualiza status para 'friends' usando os dois campos
+      const { error } = await supabase
+        .from('follows')
+        .update({ status: 'friends' })
+        .eq('following_user_id', request.id)
+        .eq('followed_user_id', this.currentUserId);
+      if (!error) {
+        // Atualiza lista local
+        this.friendRequests = this.friendRequests.filter(r => r.id !== request.id);
+      } else {
+        alert('Erro ao aceitar solicitação');
+      }
     },
 
     openChat() {
@@ -76,6 +103,7 @@ export default {
         console.error('Erro ao obter usuário:', authError.message);
         return;
       }
+      this.currentUserId = user.id;
 
       const { data: userData, error: userError} = await supabase
         .from('users')
@@ -87,7 +115,24 @@ export default {
         return;
       }
 
-      console.log('Função do usuário:', userData.role);
+      // Busca solicitações de amizade pendentes (com info do remetente)
+      const { data: requests, error: followsError } = await supabase
+        .from('follows')
+        .select('following_user_id, users:following_user_id(id, username)')
+        .eq('followed_user_id', user.id)
+        .eq('status', 'pending');
+        console.log('Solicitações de amizade:', requests);
+      if (followsError) {
+        console.error('Erro ao buscar solicitações de amizade:', followsError.message);
+        this.friendRequests = [];
+      } else {
+        // Mapear para facilitar o uso no template
+        this.friendRequests = (requests || []).map(r => ({
+          id: r.following_user_id,
+          sender: r.users
+        }));
+      }
+
       this.show = userData.role === 'professor';
     },
 
@@ -168,19 +213,60 @@ export default {
   color: #0077b5;
 }
 
-.notification-badge {
+.friend-requests {
+  cursor: pointer;
+}
+.friend-icon {
+  font-size: 22px;
+  color: #0077b5;
+}
+.friend-requests-dropdown {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #ff0000;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 0.7rem;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  min-width: 200px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+  z-index: 1000;
+  padding: 10px 0;
+}
+.dropdown-request {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+}
+.accept-btn {
+  background: #0077b5;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-left: 10px;
+}
+.accept-btn:hover {
+  background: #005a8c;
+}
+.dropdown-empty {
+  padding: 12px 16px;
+  color: #888;
+  text-align: center;
+}
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff3b3f;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 2px #333;
 }
 
 .user-profile {
@@ -237,4 +323,17 @@ footer {
   height: 100px;
   background-color: #f3f2ef;
 }
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff3b3f;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 2px #333;
+}
+
 </style>
