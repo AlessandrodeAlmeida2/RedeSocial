@@ -5,9 +5,13 @@
           <v-sheet class="mx-auto" width="300">
           <v-form class="form" v-model="valid">
               <h4>Faça login ou <a class="cadastro" @click="router.push('/cadastro')">Cadastre-se</a></h4>
-              <button class="discord" @click="signInWithDiscord">Login com Discord</button>
-              <button class="git" @click="signInWithGitHub">Login com GitHub</button>
-              <p>Or</p>
+              <div class="social-buttons">
+                <button class="git" @click="signInWithGitHub">Login com GitHub</button>
+                <button class="discord" @click="signInWithDiscord">Login com Discord</button>
+              </div>
+              <br>
+                <p style="text-align: center;">____________ Ou ____________</p>
+              <br>
               <v-text-field
                   v-model="email"
                   label="E-mail"
@@ -94,29 +98,6 @@ async function signIn() {
   }
 }
 
-//seeCurrentUser
-/*async function seeCurrentUser() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) {
-      console.log(session);
-      console.log(session.user.phone);
-  } else {
-      console.log('No active session');
-  }
-}*/
-
-
-//logout
-async function signOut() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-      console.log(error);
-  } else {
-      console.log("Logout has been successful")
-  }
-}
-
 </script>
   
 <style scoped>
@@ -151,6 +132,12 @@ async function signOut() {
     flex-direction: column;
     gap: 15px;
     width: 100%;
+  }
+
+  .social-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   :deep(.v-text-field) {

@@ -8,7 +8,7 @@
                 <button class="git" @click="signInWithGitHub">Login com GitHub</button>
                 <button class="discord" @click="signInWithDiscord">Login com Discord</button>
 
-                <p>Or</p>
+                <p style="text-align: center;">____________ Ou ____________</p>
                 <v-text-field
                     v-model="email"
                     label="E-mail"
