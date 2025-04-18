@@ -15,7 +15,8 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      alias: '/home'
+      alias: '/home',
+      meta: { requiresAuth: true }
     },
     {
       path: '/cadastro',
@@ -33,32 +34,38 @@ const router = createRouter({
     {
       path: '/user',
       name: 'user',
-      component: () => import('../components/UserView.vue')
+      component: () => import('../components/UserView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/event',
       name: 'event',
-      component: () => import('@/components/EventView.vue')
+      component: () => import('@/components/EventView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/moderacao',
       name: 'moderacao',
-      component: () => import('@/components/ModeracaoEventos.vue')
+      component: () => import('@/components/ModeracaoEventos.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/aluno',
       name: 'aluno',
-      component: () => import('@/components/AlunosView.vue')
+      component: () => import('@/components/AlunosView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/aluno/:id',
       name: 'aluno-perfil',
-      component: () => import('@/views/AlunoPerfilView.vue')
+      component: () => import('@/views/AlunoPerfilView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/grupos',
       name: 'grupos',
-      component: () => import('@/components/GruposView.vue')
+      component: () => import('@/components/GruposView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/chat/:groupId/chat',

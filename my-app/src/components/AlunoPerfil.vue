@@ -30,7 +30,7 @@
     <div v-if="shortestPath && shortestPath.length > 1" class="shortest-path">
       <strong>Caminho mais curto:</strong> {{ shortestPathLabel }}
     </div>
-    <button @click="$emit('fechar')">Fechar</button>
+    <button @click="this.$router.push('/aluno')">Fechar</button>
   </div>
 </template>
 
@@ -214,8 +214,10 @@ onMounted(async () => {
   color: #fff;
   border: none;
   border-radius: 4px;
+  margin: 8px;
   padding: 8px 20px;
   cursor: pointer;
   font-size: 1rem;
+  gap: 10px;
 }
 </style>

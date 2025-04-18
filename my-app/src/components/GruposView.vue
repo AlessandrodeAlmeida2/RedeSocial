@@ -12,7 +12,7 @@
       <div v-for="grupo in meusGrupos" :key="grupo.id" class="grupo-card">
         <h3>{{ grupo.title }}</h3>
         <button class="excluir" @click="excluirGrupo(grupo.id)">Excluir Grupo</button>
-        <button @click="goToChat(grupo.id)">Entrar no chat</button>
+        <button class="entrar" @click="goToChat(grupo.id)">Entrar no chat</button>
         <div class="membros">
           <h4>Membros</h4>
           <ul>
@@ -200,6 +200,12 @@
   button {
     padding: 0.5rem 1rem;
     cursor: pointer;
+  }
+  
+  .entrar {
+    background-color: #4caf50;
+    color: white;
+    border: none;
   }
   
   .grupo-card {

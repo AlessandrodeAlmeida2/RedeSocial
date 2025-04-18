@@ -4,7 +4,7 @@
           <h1>Entrar</h1>
           <v-sheet class="mx-auto" width="300">
           <v-form class="form" v-model="valid">
-
+              <h4>Faça login ou <a class="cadastro" @click="router.push('/cadastro')">Cadastre-se</a></h4>
               <button class="discord" @click="signInWithDiscord">Login com Discord</button>
               <button class="git" @click="signInWithGitHub">Login com GitHub</button>
               <p>Or</p>
@@ -134,6 +134,16 @@ async function signOut() {
     margin-bottom: 20px;
     color: #333;
     font-size: 24px;
+  }
+
+  .cadastro {
+    color: #0077b5;
+    text-decoration: none;
+  }
+
+  .cadastro:hover {
+    text-decoration: underline;
+    background-color: transparent;
   }
 
   .campos {

@@ -143,7 +143,7 @@ export default {
       } else {
         console.log("Logout has been successful");
         window.alert('Você fez Logout com sucesso');
-        this.$router.push('/home'); // correto dentro da Options API
+        this.$router.push('/login');
       }
     }
   },
