@@ -102,30 +102,57 @@ async function signIn() {
   
 <style scoped>
   .container-login {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 430px;
+  margin: 48px auto;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  background: #f8f9fa;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .container-login {
+    max-width: 98vw;
+    padding: 1.5rem 0.5rem;
+    margin: 24px auto;
   }
+}
   
   .container-login h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-  }
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #1e293b;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 1rem;
+}
+.container-login h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 80px;
+  background: linear-gradient(90deg, #3b82f6, #2dd4bf);
+  border-radius: 2px;
+}
 
   .cadastro {
-    color: #0077b5;
-    text-decoration: none;
-  }
-
-  .cadastro:hover {
-    text-decoration: underline;
-    background-color: transparent;
-  }
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cadastro:hover {
+  text-decoration: underline;
+  background-color: transparent;
+  color: #1d4ed8;
+}
 
   .campos {
     display: flex;
@@ -135,26 +162,59 @@ async function signIn() {
   }
 
   .social-buttons {
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 500px) {
+  .social-buttons {
     flex-direction: column;
     gap: 10px;
   }
+}
+.git, .discord {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+.git {
+  background: linear-gradient(135deg, #232526, #414345);
+  color: white;
+}
+.git:hover {
+  background: linear-gradient(135deg, #414345, #232526);
+}
+.discord {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
+.discord:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+}
 
   :deep(.v-text-field) {
     margin-bottom: 15px;
   }
 
   :deep(.v-field) {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.3s;
-  }
-
-  :deep(.v-field:focus-within) {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-  }
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: #f8fafc;
+}
+:deep(.v-field:focus-within) {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
 
   :deep(.v-field__input) {
     padding: 10px;
@@ -166,11 +226,36 @@ async function signIn() {
   }
 
   .buttonContainer {
-    margin-top: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+  margin-top: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.v-btn {
+  padding: 0.9rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.23);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  max-width: 300px;
+  width: 100%;
+}
+.v-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.13);
+}
+.v-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 
   .discord {
     padding: 12px;
@@ -210,13 +295,13 @@ async function signIn() {
   }
 
   .input {
-    width: 100%;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 40px auto;
-  }
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
 
   .message {
     padding: 10px;

@@ -4,10 +4,10 @@
             <h1>Faça seu cadastro</h1>
             <v-sheet class="mx-auto" width="300">
             <v-form class="campos">
-
+              <div class="social-buttons">
                 <button class="git" @click="signInWithGitHub">Login com GitHub</button>
                 <button class="discord" @click="signInWithDiscord">Login com Discord</button>
-
+              </div>
                 <p style="text-align: center;">____________ Ou ____________</p>
                 <v-text-field
                     v-model="email"
@@ -104,43 +104,100 @@ async function createAccount() {
 
 <style scoped>
   .container-login {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 430px;
+  margin: 48px auto;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  background: #f8f9fa;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.git, .discord {
+  width: 90%;
+  
+}
+
+@media (max-width: 600px) {
+  .container-login {
+    max-width: 98vw;
+    padding: 1.5rem 0.5rem;
+    margin: 24px auto;
   }
+}
   
   .container-login h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-  }
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #1e293b;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding-bottom: 1rem;
+}
+.container-login h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 4px;
+  width: 80px;
+  background: linear-gradient(90deg, #3b82f6, #2dd4bf);
+  border-radius: 2px;
+}
 
   .campos {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 1rem;
+  max-width: 370px;
+}
+@media (max-width: 600px) {
+  .campos {
+    max-width: 98vw;
   }
+}
 
-  :deep(.v-text-field) {
-    margin-bottom: 15px;
+  :deep(.v-text-field), .git, .discord {
+  margin-bottom: 15px;
+  width: 100%;
+  max-width: 370px;
+}
+@media (max-width: 600px) {
+  :deep(.v-text-field), .git, .discord {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
   }
+}
 
   :deep(.v-field) {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    transition: border-color 0.3s;
-  }
-
-  :deep(.v-field:focus-within) {
-    outline: none;
-    border-color: #4a90e2;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-  }
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background: #f8fafc;
+}
+:deep(.v-field:focus-within) {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
 
   :deep(.v-field__input) {
     padding: 10px;
@@ -152,11 +209,62 @@ async function createAccount() {
   }
 
   .buttonContainer {
-    margin-top: 20px;
+  margin-top: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.git, .discord {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  width: 340px;
+  max-width: 100%;
+}
+@media (max-width: 600px) {
+  .git, .discord {
     width: 100%;
-    display: flex;
-    justify-content: center;
+    min-width: 0;
+    max-width: 100vw;
   }
+}
+.v-btn {
+  padding: 0.9rem 2.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.23);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  max-width: 370px;
+  width: 100%;
+}
+@media (max-width: 600px) {
+  .v-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
+  }
+}
+.v-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.13);
+}
+.v-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
 
   .discord {
     padding: 12px;
@@ -196,13 +304,13 @@ async function createAccount() {
   }
 
   .input {
-    width: 100%;
-    max-width: 350px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 40px auto;
-  }
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
 
   .message {
     padding: 10px;
